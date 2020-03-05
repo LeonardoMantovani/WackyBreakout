@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUD : MonoBehaviour
+public class HUD : IntEventInvoker
 {
+    #region Fields
+
     //Score Text
     [SerializeField]
     Text scoreText;
@@ -16,6 +18,19 @@ public class HUD : MonoBehaviour
     Text ballLeftText;
     const string BallLeftPrefix = "Ball Left:\n";
     int ballLeft;
+
+    #endregion
+
+    #region Proprities
+
+    public int Score
+    {
+        get { return score; }
+    }
+
+    #endregion
+
+    #region Methods
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +45,10 @@ public class HUD : MonoBehaviour
 
         //add the ReduceBallsLeftEvent listener
         EventManager.AddEventListener(EventName.ReduceBallsLeftEvent, BallSpawned);
+
+        //add this script as an invoker for the GameOver Event
+        events.Add(EventName.GameOverEvent, new GameOverEvent());
+        EventManager.AddEventInvoker(EventName.GameOverEvent, this);
     }
 
     // Update is called once per frame
@@ -51,7 +70,7 @@ public class HUD : MonoBehaviour
         }
         else
         {
-            //TODO: Game Over Screen
+            events[EventName.GameOverEvent].Invoke((int)GameOverType.Defeat); //casting as int the GameOverType allow us to call all events as UnityEvents<int>
         }
     }
 
@@ -66,4 +85,6 @@ public class HUD : MonoBehaviour
     {
         MenuManager.LoadMenu(MenuName.PauseMenu);
     }
+
+    #endregion
 }

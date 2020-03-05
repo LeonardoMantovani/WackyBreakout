@@ -8,6 +8,7 @@ public enum EventName
     FreezerEvent,
     SpeedupEvent,
     SpawnBallEvent,
+    BlockDestroyedEvent,
     GameOverEvent,
 
     //HUD Events

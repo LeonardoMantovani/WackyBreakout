@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : MonoBehaviour
+public class Block : IntEventInvoker
 {
     #region Fields
 
@@ -49,6 +49,15 @@ public class Block : MonoBehaviour
             blockType = BlockType.Freezer;
         else
             blockType = BlockType.SpeedUp;
+
+        //add this block as an invoker for the BlockDestroyedEvent
+        events.Add(EventName.BlockDestroyedEvent, new BlockDestroyedEvent());
+        EventManager.AddEventInvoker(EventName.BlockDestroyedEvent, this);
+    }
+
+    private void OnDestroy()
+    {
+        events[EventName.BlockDestroyedEvent].Invoke(0); //0 is a useless parameter that allow us to call all events as UnityEvents<int>
     }
 
     #endregion
