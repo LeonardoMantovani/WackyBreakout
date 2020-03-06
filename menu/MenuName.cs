@@ -5,5 +5,6 @@ using UnityEngine;
 public enum MenuName
 {
     MainMenu,
-    PauseMenu
+    PauseMenu,
+    GameOverScreen,
 }

@@ -15,6 +15,9 @@ public static class MenuManager
             case MenuName.PauseMenu:
                 Object.Instantiate(Resources.Load(@"prefabs\PauseMenu"));
                 break;
+            case MenuName.GameOverScreen:
+                Object.Instantiate(Resources.Load(@"prefabs\GameOverScreen"));
+                break;
             default:
                 break;
         }

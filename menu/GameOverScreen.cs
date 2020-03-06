@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameOverScreen : MonoBehaviour
 {
@@ -14,5 +15,12 @@ public class GameOverScreen : MonoBehaviour
     void Update()
     {
         //TODO: add a way to return to the Main Menu
+    }
+
+    public void OnHomeButtonClick()
+    {
+        Time.timeScale = 1;
+        Destroy(gameObject);
+        MenuManager.LoadMenu(MenuName.MainMenu);
     }
 }

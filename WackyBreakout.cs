@@ -53,8 +53,8 @@ public class WackyBreakout : IntEventInvoker
 
     public void SpawnGameOver(int gameOverType)
     {
-        //spawn the Game Over Screen
-        Instantiate<GameObject>(Resources.Load<GameObject>(@"prefabs\GameOverScreen"));
+        //load the Game Over Screen
+        MenuManager.LoadMenu(MenuName.GameOverScreen);
 
         //Get the VictoryText
         Text victoryText = GameObject.FindWithTag("VictoryText").GetComponent<Text>();
