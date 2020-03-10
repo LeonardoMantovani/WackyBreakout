@@ -16,9 +16,6 @@ public class BallSpawner : IntEventInvoker
     Vector3 upperRightCorner;
     float colliderRadius;
 
-    //flag in order to avoid balls overlapping on spawning
-    bool ballInQueue = false;
-    
     //timer before retry spawning a ball
     Timer waitingTimer;
 
@@ -29,12 +26,22 @@ public class BallSpawner : IntEventInvoker
     bool speedingUp = false; //(a flag for the speedUp effect)
     Timer speedupTimer;
 
+    bool ballsFinished = false;
+
     /// <summary>
     /// A propriety which returns the speedingUp flag
     /// </summary>
     public bool SpeedingUp
     {
         get { return speedingUp; }
+    }
+
+    /// <summary>
+    /// A propriety which returns if the balls to spawn are finished or not
+    /// </summary>
+    public bool BallsFinishedPropriety
+    {
+        get { return ballsFinished; }
     }
 
     // Start is called before the first frame update
@@ -86,6 +93,9 @@ public class BallSpawner : IntEventInvoker
         //add this as an invoker for the HUD's ReduceBallsLeft event
         events.Add(EventName.ReduceBallsLeftEvent, new ReduceBallsLeftEvent());
         EventManager.AddEventInvoker(EventName.ReduceBallsLeftEvent, this);
+
+        //add the BallsFinished method as a listener for the BallsFinished Event
+        EventManager.AddEventListener(EventName.BallsFinishedEvent, BallsFinished);
     }
 
     // Update is called once per frame
@@ -96,22 +106,22 @@ public class BallSpawner : IntEventInvoker
 
     public void SpawnBall(int useless = 0) //useless is a parameter that allow us to call all listeners as UnityAction<int>
     {
-        if (Physics2D.OverlapArea(lowerLeftCorner, upperRightCorner) == null)
+        if (!ballsFinished)
         {
-            GameObject newBall = Instantiate<GameObject>(ballPrefab);
-            if (speedingUp)
+            if (Physics2D.OverlapArea(lowerLeftCorner, upperRightCorner) == null)
             {
-                newBall.GetComponent<Rigidbody2D>().velocity *= 2;
+                GameObject newBall = Instantiate<GameObject>(ballPrefab);
+                if (speedingUp)
+                {
+                    newBall.GetComponent<Rigidbody2D>().velocity *= 2;
+                }
+
+                events[EventName.ReduceBallsLeftEvent].Invoke(0); //0 is a useless parameter that allow us to call all events as UnityEvents<int>
             }
-
-            events[EventName.ReduceBallsLeftEvent].Invoke(0); //0 is a useless parameter that allow us to call all events as UnityEvents<int>
-
-            ballInQueue = false;
-        }
-        else
-        {
-            ballInQueue = true;
-            waitingTimer.Run();
+            else
+            {
+                waitingTimer.Run();
+            }
         }
     }
 
@@ -157,4 +167,8 @@ public class BallSpawner : IntEventInvoker
         speedingUp = false;
     }
 
+    public void BallsFinished (int useless = 0)
+    {
+        ballsFinished = true;
+    }
 }

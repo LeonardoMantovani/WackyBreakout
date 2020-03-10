@@ -46,9 +46,9 @@ public class HUD : IntEventInvoker
         //add the ReduceBallsLeftEvent listener
         EventManager.AddEventListener(EventName.ReduceBallsLeftEvent, BallSpawned);
 
-        //add this script as an invoker for the GameOver Event
-        events.Add(EventName.GameOverEvent, new GameOverEvent());
-        EventManager.AddEventInvoker(EventName.GameOverEvent, this);
+        //add this script as an invoker for the BallsFinished Event
+        events.Add(EventName.BallsFinishedEvent, new BallsFinishedEvent());
+        EventManager.AddEventInvoker(EventName.BallsFinishedEvent, this);
     }
 
     // Update is called once per frame
@@ -61,16 +61,17 @@ public class HUD : IntEventInvoker
         }
     }
 
-    public void BallSpawned(int useless = 0) ////0 is a useless parameter that allow us to call all listeners as UnityAction<int>
+    public void BallSpawned(int useless = 0) //0 is a useless parameter that allow us to call all listeners as UnityAction<int>
     {
         ballLeft--;
-        if (ballLeft >= 0)
+        if (ballLeft > 0)
         {
             ballLeftText.text = BallLeftPrefix + ballLeft.ToString();
         }
         else
         {
-            events[EventName.GameOverEvent].Invoke((int)GameOverType.Defeat); //casting as int the GameOverType allow us to call all events as UnityEvents<int>
+            events[EventName.BallsFinishedEvent].Invoke(0); //0 is a useless parameter that allow us to call all events as UnityEvents<int>
+            ballLeftText.text = BallLeftPrefix + ballLeft.ToString();
         }
     }
 

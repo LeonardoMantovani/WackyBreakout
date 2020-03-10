@@ -29,6 +29,9 @@ public class Ball : IntEventInvoker
     //HUD Script (to change Balls Left value)
     HUD hud;
 
+    //[SerializeField]
+    //bool ballsFinished = false;
+
     #endregion
 
     #region Methods
@@ -80,29 +83,18 @@ public class Ball : IntEventInvoker
         //add this ball as an invoker for the HUD's AddPoints event
         events.Add(EventName.AddPointsEvent, new AddPointsEvent());
         EventManager.AddEventInvoker(EventName.AddPointsEvent, this);
+
+        ////add the BallsFinished method as a listener for the BallsFinished Event
+        //EventManager.AddEventListener(EventName.BallsFinishedEvent, BallsFinished);
+
+        //add this ball as an invoker for the GameOver Event
+        events.Add(EventName.GameOverEvent, new GameOverEvent());
+        EventManager.AddEventInvoker(EventName.GameOverEvent, this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (getRedyTimer.Finished && getReadyTimerDestroyed == false)
-        //{
-        //    //add a force to the ball
-        //    Vector2 direction = new Vector2(0, -1);
-        //    rb2d.AddForce(direction * ConfigurationUtils.BallInitialForceMagnitude, ForceMode2D.Impulse);
-            
-        //    //change the ball layer from JustBornBall to Ball so it can collide with other balls
-        //    gameObject.layer = 9;
-
-        //    //fake-destroy the timer
-        //    getReadyTimerDestroyed = true;
-        //}
-        
-        //if (deathTimer.Finished)
-        //{
-        //    DestroyBall();
-        //}
-
         if (transform.position.y + colliderRadius < ScreenUtils.ScreenBottom)
         {
             DestroyBall();
@@ -146,13 +138,32 @@ public class Ball : IntEventInvoker
             }
 
             Destroy(collision.gameObject);
+            AudioManager.PlayAudioClip(AudioClipName.BlockDestroyed);
         }
     }
 
     public void DestroyBall(int useless = 0) //useless is a parameter that allow us to call all listeners as UnityAction<int>
     {
-        events[EventName.SpawnBallEvent].Invoke(0);
+        //destroy the ball and play proper sound
         Destroy(gameObject);
+        AudioManager.PlayAudioClip(AudioClipName.BallDestroyed);
+        //spawn another ball if they aren't finished
+        if(!ballSpawner.BallsFinishedPropriety)
+            events[EventName.SpawnBallEvent].Invoke(0);
+        //or invoke the GameOver Event if this was the last ball standing
+        else if (GameObject.FindGameObjectsWithTag("Ball").Length <= 1) //balls has to be <= 1 becouse this ball is still alive
+            events[EventName.GameOverEvent].Invoke((int)GameOverType.Defeat); //casting as int the GameOverType allow us to call all events as UnityEvents<int>
+
+        /*
+        //invoke the GameOver event if this was the last ball aviable
+        if (ballsFinished && GameObject.FindGameObjectsWithTag("Ball").Length <= 0)
+        {
+            events[EventName.GameOverEvent].Invoke((int)GameOverType.Defeat); //casting as int the GameOverType allow us to call all events as UnityEvents<int>
+        }
+        //or spawn another ball
+        else
+            events[EventName.SpawnBallEvent].Invoke(0);
+        */
     }
 
     public void StartMoving(int useless = 0) //useless is a parameter that allow us to call all listeners as UnityAction<int>
@@ -170,6 +181,11 @@ public class Ball : IntEventInvoker
             getReadyTimerDestroyed = true;
         }
     }
+
+    //public void BallsFinished(int useless = 0)
+    //{
+    //    ballsFinished = true;
+    //}
 
     #endregion
 }

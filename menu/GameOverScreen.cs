@@ -14,7 +14,7 @@ public class GameOverScreen : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO: add a way to return to the Main Menu
+        
     }
 
     public void OnHomeButtonClick()

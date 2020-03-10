@@ -10,6 +10,7 @@ public enum EventName
     SpawnBallEvent,
     BlockDestroyedEvent,
     GameOverEvent,
+    BallsFinishedEvent,
 
     //HUD Events
     AddPointsEvent,
