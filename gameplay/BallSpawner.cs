@@ -165,6 +165,9 @@ public class BallSpawner : IntEventInvoker
 
         //turn off the flag (to stop the speed-doubling after spawning)
         speedingUp = false;
+
+        //play the Speedup Effect Finished sound
+        AudioManager.PlayAudioClip(AudioClipName.SpeedupEffectFinished);
     }
 
     public void BallsFinished (int useless = 0)

@@ -64,8 +64,12 @@ public class WackyBreakout : IntEventInvoker
             HUD hud = GameObject.FindWithTag("HUD").GetComponent<HUD>();
             
             victoryText.text = VictoryMessage + hud.Score.ToString();
+            AudioManager.PlayAudioClip(AudioClipName.GameOverVictory);
         }
         else
+        {
             victoryText.text = DefeatMessage;
+            AudioManager.PlayAudioClip(AudioClipName.GameOverDefeat);
+        }
     }
 }

@@ -121,24 +121,28 @@ public class Ball : IntEventInvoker
             {
                 case BlockType.Standard:
                     events[EventName.AddPointsEvent].Invoke((int)ConfigurationUtils.StandardBlocksPoints);
+                    AudioManager.PlayAudioClip(AudioClipName.BlockDestroyed);
                     break;
                 case BlockType.Bonus:
                     events[EventName.AddPointsEvent].Invoke((int)ConfigurationUtils.BonusBlocksPoints);
+                    AudioManager.PlayAudioClip(AudioClipName.BlockDestroyed);
                     break;
                 case BlockType.Freezer:
                     events[EventName.AddPointsEvent].Invoke((int)ConfigurationUtils.FreezerBlocksPoints);
                     events[EventName.FreezerEvent].Invoke(0); //0 is a useless parameter that allow us to call all events as UnityEvents<int>
+                    AudioManager.PlayAudioClip(AudioClipName.FreezeEffect);
                     break;
                 case BlockType.SpeedUp:
                     events[EventName.AddPointsEvent].Invoke((int)ConfigurationUtils.SpeedupBlocksPoints);
                     events[EventName.SpeedupEvent].Invoke(0); //0 is a useless parameter that allow us to call all events as UnityEvents<int>
+                    AudioManager.PlayAudioClip(AudioClipName.SpeedupEffect);
                     break;
                 default:
                     break;
             }
 
             Destroy(collision.gameObject);
-            AudioManager.PlayAudioClip(AudioClipName.BlockDestroyed);
+            
         }
     }
 

@@ -158,6 +158,7 @@ public class Player : MonoBehaviour
     public void Unfreeze(int useless = 0) //useless is a parameter that allow us to call all listeners as UnityAction<int>
     {
         freezed = false;
+        AudioManager.PlayAudioClip(AudioClipName.FreezeEffectFinished);
     }
 
     #endregion

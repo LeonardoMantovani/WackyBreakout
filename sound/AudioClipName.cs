@@ -6,4 +6,10 @@ public enum AudioClipName
 {
     BallDestroyed,
     BlockDestroyed,
+    FreezeEffect,
+    FreezeEffectFinished,
+    SpeedupEffect,
+    SpeedupEffectFinished,
+    GameOverVictory,
+    GameOverDefeat,
 }

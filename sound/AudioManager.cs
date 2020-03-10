@@ -30,6 +30,12 @@ public static class AudioManager
 
         audioClips.Add(AudioClipName.BallDestroyed, Resources.Load<AudioClip>(@"audioClips\BallDestroyed"));
         audioClips.Add(AudioClipName.BlockDestroyed, Resources.Load<AudioClip>(@"audioClips\BlockDestroyed"));
+        audioClips.Add(AudioClipName.FreezeEffect, Resources.Load<AudioClip>(@"audioClips\FreezeEffect"));
+        audioClips.Add(AudioClipName.FreezeEffectFinished, Resources.Load<AudioClip>(@"audioClips\FreezeEffectFinished"));
+        audioClips.Add(AudioClipName.SpeedupEffect, Resources.Load<AudioClip>(@"audioClips\SpeedupEffect"));
+        audioClips.Add(AudioClipName.SpeedupEffectFinished, Resources.Load<AudioClip>(@"audioClips\SpeedupEffectFinished"));
+        audioClips.Add(AudioClipName.GameOverVictory, Resources.Load<AudioClip>(@"audioClips\GameOverVictory"));
+        audioClips.Add(AudioClipName.GameOverDefeat, Resources.Load<AudioClip>(@"audioClips\GameOverDefeat"));
 
         initialized = true;
     }
